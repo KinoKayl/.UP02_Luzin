@@ -176,16 +176,14 @@ namespace MasterFloorAPP.Pages
                
                 if (currentPartner != null) 
                 {
-                    if (MessageBox.Show(
-                        "Вы уверены, что хотите сохранить изменения?",
-                        "Подтверждение",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    var attachedPartner = db.Partners.Find(currentPartner.ID);
+                    if (attachedPartner == null)
                     {
+                        MessageBox.Show("Партнёр не найден в текущем контексте.");
                         return;
                     }
 
-                    
+
                     currentPartner.Name = NameOrganization;
                     currentPartner.Director = DirectorOrganization;
                     currentPartner.Email = EmailOrganization;
@@ -195,25 +193,18 @@ namespace MasterFloorAPP.Pages
                     currentPartner.Rating = ratingValue;
                     currentPartner.Type = (int)selectedType;
 
-                    db.SaveChanges();
-
-                    int partnerId = currentPartner.ID;
-
-                    var partnerProduct = db.Partner_products
-                                           .FirstOrDefault(pp => pp.Partner == partnerId);
+                    var partnerProduct = db.Partner_products.FirstOrDefault(pp => pp.Partner == attachedPartner.ID);
 
                     if (partnerProduct != null)
                     {
                         partnerProduct.Product = selectedProductID ?? partnerProduct.Product;
-                        partnerProduct.Quantity = int.TryParse(Quantity, out int quantityValue)
-                            ? quantityValue
-                            : partnerProduct.Quantity;
+                        partnerProduct.Quantity = int.TryParse(Quantity, out int quantityValue) ? quantityValue : partnerProduct.Quantity;
                     }
                     else if (selectedProductID.HasValue && int.TryParse(Quantity, out int quantityValue))
                     {
                         db.Partner_products.Add(new Partner_products
                         {
-                            Partner = partnerId,
+                            Partner = attachedPartner.ID,
                             Product = selectedProductID.Value,
                             Quantity = quantityValue,
                             SaleDATE = DateTime.Now
@@ -221,11 +212,7 @@ namespace MasterFloorAPP.Pages
                     }
 
                     db.SaveChanges();
-                    MessageBox.Show(
-                        "Данные партнера успешно обновлены.",
-                        "Успех",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information);
+                    MessageBox.Show("Данные партнёра успешно обновлены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else 
                 {
@@ -244,13 +231,13 @@ namespace MasterFloorAPP.Pages
                     db.Partners.Add(newPartner);
                     db.SaveChanges();
 
-                    int partnerId = newPartner.ID;
+                    int Partner = newPartner.ID;
 
                     if (int.TryParse(Quantity, out int quantityValue) && selectedProductID.HasValue)
                     {
                         db.Partner_products.Add(new Partner_products
                         {
-                            Partner = partnerId,
+                            Partner = Partner,
                             Product = selectedProductID.Value,
                             Quantity = quantityValue,
                             SaleDATE = DateTime.Now
