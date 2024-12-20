@@ -1,0 +1,74 @@
+﻿<Page x:Class="MasterFloorAPP.Pages.Discounts"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MasterFloorAPP.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Скидки">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <ListView Name="ListUser" Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" MouseDoubleClick="ListUser_SelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock VerticalAlignment="Center" TextAlignment="Left" Grid.Column="0" 
+                                   Text="{Binding Partner.Partner_type.Type}" FontSize="18" FontWeight="Bold" 
+                                   Margin="0,0,133,0" />
+
+                            <TextBlock VerticalAlignment="Center" TextAlignment="Left" Width="180" 
+                                   Grid.Column="0" HorizontalAlignment="Left" FontSize="18" 
+                                   Text="{Binding Partner.Name}" Margin="48,0,0,0" />
+
+                            <TextBlock VerticalAlignment="Center" TextAlignment="Left" Width="10" 
+                                   Grid.Column="0" HorizontalAlignment="Left" FontSize="18" 
+                                   Text="|" Margin="40,0,0,0"/>
+
+                            <TextBlock VerticalAlignment="Center" TextAlignment="Left" Width="370" 
+                                   Grid.Row="2" HorizontalAlignment="Left" FontSize="18" 
+                                   Text="{Binding Partner.Director}" />
+
+                            <TextBlock VerticalAlignment="Center" TextAlignment="Left" Width="200" 
+                                   Grid.Row="3" HorizontalAlignment="Left" FontSize="18" 
+                                   Text="{Binding Partner.Number}" />
+
+                            <TextBlock VerticalAlignment="Center" TextAlignment="Left" Width="200" 
+                                   Grid.Row="4" HorizontalAlignment="Left" FontSize="18" 
+                                   Text="{Binding Partner.Rating}" />
+
+                            <TextBlock VerticalAlignment="Center" TextAlignment="Right" Width="200" 
+                                   Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right" FontSize="18" 
+                                   Text="{Binding Discount, StringFormat={}{0}%}" Margin="0,0,50,0" 
+                                   Grid.RowSpan="2" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button x:Name="BtnAdd" Content="Добавить партнера" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 10 0" Click="BtnAdd_Click" Style="{StaticResource Button}"/>
+        <Button x:Name="BtnShowSales" Content="Посмотреть продажи" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0" Click="BtnShowSales_Click" Style="{StaticResource Button}"/>
+    </Grid>
+</Page>
